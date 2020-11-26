@@ -1,1 +1,2 @@
-# movie websites
+# Movie website that supports movie searching
+
