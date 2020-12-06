@@ -1,10 +1,11 @@
 $(function(){
     $("#search").on("click", function(){
         var keyword = $("form-control").val()
+        console.log(keyword);
         if(keyword == "" || keyword == null){
             alert("Please enter a word");
         }
-        findMovie(keyword);
+        findMovie(keyword,2);
     });
 });
 
@@ -12,7 +13,7 @@ const MOVIE_SEARCH_URL = "https://api.themoviedb.org/3/search/movie?";
 const MOVIE_IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
 const API_KEY = "21c2f2edc4b87ed7ca1bab78ecee5012";
 
-function findMovie(keyword){
+function findMovie(keyword,page){
     $.ajax({
         url: MOVIE_SEARCH_URL + 
          "language=" + "en-US" +
