@@ -32,12 +32,28 @@ function findMovie(keyword,page){
 
 function successCallback(result, status, xhr){
     var resultHTML = $("#search-result");
+    console.log(resultHTML);
     resultHTML.empty();
     var blocks = getResultBlocks(result["results"]);
+    var options = {
+        dataSource: blocks,
+        pageSize: 5,
+        callback: (response,pagination) => {
+            var dataHtml = '';
+            $.each(response, (item) => {
+                dataHtml += item;
+            });
+            resultHTML.prev().html(dataHtml);
+        }
+    };
+    console.log(resultHTML);
+    resultHTML;
+    blocks;
+    // resultHTML.pagination(options);
 }
 
 function errorCallback(error, status, xhr){
-    $("#message").html("Result: " + status + " " + error);
+    $("#search-result").html("Result: " + status + " " + error);
 }
 
 function getResultBlocks(result){
