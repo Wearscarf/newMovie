@@ -1,6 +1,7 @@
 $(function(){
     $("#search").on("click", function(){
-        var keyword = $("form-control").val()
+        var keyword = $("#target").val()
+        console.log("here");
         console.log(keyword);
         if(keyword == "" || keyword == null){
             alert("Please enter a word");
@@ -32,7 +33,7 @@ function findMovie(keyword,page){
 function successCallback(result, status, xhr){
     var resultHTML = $("#search-result");
     resultHTML.empty();
-    var blocks = getResultBlocks(result("results"));
+    var blocks = getResultBlocks(result["results"]);
 }
 
 function errorCallback(error, status, xhr){
