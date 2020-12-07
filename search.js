@@ -1,8 +1,6 @@
 $(function(){
     $("#search").on("click", function(){
         var keyword = $("#target").val()
-        console.log("here");
-        console.log(keyword);
         if(keyword == "" || keyword == null){
             alert("Please enter a word");
         }
@@ -10,19 +8,15 @@ $(function(){
     });
 });
 
-const MOVIE_SEARCH_URL = "https://api.themoviedb.org/3/search/movie?";
-const MOVIE_IMAGE_URL = "https://image.tmdb.org/t/p/w500/";
+const MOVIE_SEARCH_URL = "https://api.themoviedb.org/3/search/movie";
+const MOVIE_IMAGE_URL = "https://image.tmdb.org/t/p/w500";
 const API_KEY = "21c2f2edc4b87ed7ca1bab78ecee5012";
 
 function findMovie(keyword,page){
     $.ajax({
-        url: MOVIE_SEARCH_URL + 
-         "language=" + "en-US" +
-         "&query=" + keyword + 
-         "&page=" + page + 
-         "&include_adult=" + "false",
+        url: MOVIE_SEARCH_URL,
         type: "GET", 
-        data: { "api_key":  API_KEY},
+        data: { "api_key":  API_KEY, "language": "en-US", "query": keyword},
         dataType: "json",
         timeout: 1000,
         success: successCallback,
@@ -31,45 +25,39 @@ function findMovie(keyword,page){
 }
 
 function successCallback(result, status, xhr){
-    var resultHTML = $("#search-result");
-    console.log(resultHTML);
-    resultHTML.empty();
-    var blocks = getResultBlocks(result["results"]);
-    var options = {
-        dataSource: blocks,
-        pageSize: 5,
-        callback: (response,pagination) => {
-            var dataHtml = '';
-            $.each(response, (item) => {
-                dataHtml += item;
-            });
-            resultHTML.prev().html(dataHtml);
-        }
-    };
-    console.log(resultHTML);
-    resultHTML;
-    blocks;
-    // resultHTML.pagination(options);
+    $(".container").empty();
+    //var blocks = getResultBlocks(result["results"]);
+    results = getResultBlocks(result["results"])   
+    $.each(results, function(){
+        $(".container").append(this);
+    })
 }
 
 function errorCallback(error, status, xhr){
-    $("#search-result").html("Result: " + status + " " + error);
+    console.log("error");
 }
 
 function getResultBlocks(result){
-    var res = [];
-    $.each(result, function(){
+    results = []
+    // result is an array of JSON. Each element in result array is an JSON.
+    $.each(result, function() {
         var movieImage = this["poster_path"] === null ? "failed-Image.png" : MOVIE_IMAGE_URL + this["poster_path"];
+        console.log(movieImage);
         var movieTitle = this["title"];
         var movieDescription = this["overview"];
         var block = 
         `
-            <div class="movie-block clearfix">
-                <img class="movie-poster float-left" src=${movieImage}/>
-                <h3 class="movie-title" ${movieTitle}/>
-                <p class="movie-description">${movieDescription}</p>
-            </div>
+            <div class="row">
+                <div class="col-4">
+                  <img src=${movieImage}/>
+                </div>
+                <div class="col-8">
+                  <h1>${movieTitle}</h1>
+                  <p>${movieDescription}</p>
+                </div>
+              </div>
         `
-        res.push(block);
+        results.push(block);
     })
+    return results;
 }

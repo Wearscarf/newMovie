@@ -1,15 +1,44 @@
-h1 {
-    text-align: center;
+#movie_title {
+	margin: 10px auto 5px auto;
+	width: 80%;
 }
 
-mainBar{
-    width:70%;
+#movie_title h1 {
+	text-align: center;
 }
 
-body {
 
-    margin: 25px 25px 25px 25px;
-    height:100%;
-    text-align: center;
-    
+#mainBar {
+    width:80%;
+    margin: 10px auto 0px auto;
 }
+
+
+.movie_content {
+	width: 80%;
+	margin: 10px auto 0px auto;
+}
+
+.movie_info {
+	margin-left: 10px;
+}
+
+.movie {
+	width: 100%;
+}
+
+.movie_img {
+	float: left;
+}
+
+.container {
+	margin-left: 0;
+	margin-right: 0;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.row {
+	margin-bottom: 10px;
+}
+
