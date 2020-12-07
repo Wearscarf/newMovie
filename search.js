@@ -9,7 +9,7 @@ $(function(){
 });
 
 const MOVIE_SEARCH_URL = "https://api.themoviedb.org/3/search/movie";
-const MOVIE_IMAGE_URL = "https://image.tmdb.org/t/p/w500";
+const MOVIE_IMAGE_URL = "https://image.tmdb.org/t/p/w200";
 const API_KEY = "21c2f2edc4b87ed7ca1bab78ecee5012";
 
 function findMovie(keyword,page){
@@ -41,22 +41,36 @@ function getResultBlocks(result){
     results = []
     // result is an array of JSON. Each element in result array is an JSON.
     $.each(result, function() {
-        var movieImage = this["poster_path"] === null ? "failed-Image.png" : MOVIE_IMAGE_URL + this["poster_path"];
-        console.log(movieImage);
+        var movieImage = this["poster_path"] === null ? "invalid.jpg" : MOVIE_IMAGE_URL + this["poster_path"];
         var movieTitle = this["title"];
         var movieDescription = this["overview"];
         var block = 
         `
             <div class="row">
-                <div class="col-4">
-                  <img src=${movieImage}/>
+                <div class="col-3">
+                  <img src=${movieImage}>
                 </div>
-                <div class="col-8">
+                <div class="col-9">
                   <h1>${movieTitle}</h1>
                   <p>${movieDescription}</p>
                 </div>
               </div>
         `
+        if (movieImage === "invalid.jpg") {
+            block = `
+            <div class="row">
+                <div class="col-3">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                </div>
+                <div class="col-9">
+                  <h1>${movieTitle}</h1>
+                  <p>${movieDescription}</p>
+                </div>
+              </div>
+            `
+        }
         results.push(block);
     })
     return results;
